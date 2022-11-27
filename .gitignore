@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/upload-script/node_modules
 /.pnp
 .pnp.js
 

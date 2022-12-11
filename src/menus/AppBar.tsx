@@ -5,13 +5,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import { useContext } from "react";
+import { forwardRef, useContext } from "react";
 import { AppContext } from "../AppContext";
 
-export default function ButtonAppBar() {
+const ButtonAppBar = forwardRef((props, ref) => {
   const App = useContext(AppContext);
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }} ref={ref}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -30,4 +30,6 @@ export default function ButtonAppBar() {
       </AppBar>
     </Box>
   );
-}
+});
+
+export default ButtonAppBar;

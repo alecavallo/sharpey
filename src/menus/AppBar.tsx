@@ -7,12 +7,13 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import { forwardRef, useContext } from "react";
 import { AppContext } from "../AppContext";
+import { blue } from "../colors";
 
 const ButtonAppBar = forwardRef((props, ref) => {
   const App = useContext(AppContext);
   return (
     <Box sx={{ flexGrow: 1 }} ref={ref}>
-      <AppBar position="static">
+      <AppBar position="static" style={{ background: `${blue}` }}>
         <Toolbar>
           <IconButton
             size="large"

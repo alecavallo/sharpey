@@ -2,9 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Container from "@mui/material/Container";
 import BottomMenu from "./menus/BottomMenu";
+
 import AppBar from "./menus/AppBar";
 import { AppContext } from "./AppContext";
 import Paper from "@mui/material/Paper";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import FoodForm from "./register/FoodFrom";
+import CarbosTable from "./information/CarbosTable";
+import MealsReport from "./reports/MealsReport";
+import { dark, light } from "./colors";
+import { Box } from "@mui/material";
 
 function App() {
   const [title, setTitle] = useState("Bienvenidos");
@@ -28,28 +37,35 @@ function App() {
   }, []);
 
   return (
-    <Container maxWidth="xl">
+    <Box>
       <AppContext.Provider value={values}>
-        <AppBar ref={ref} />
-        <Container
-          maxWidth={false}
-          disableGutters={false}
-          sx={{
-            backgroundColor: "blue",
-            minHeight: `calc(100vh - ${divHeight}px - ${bottomDivHeight}px)`,
-          }}
-        >
-          <h1 style={{ display: "inline-block" }}>Este es mi contenido</h1>
-        </Container>
-        <Paper
-          sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
-          elevation={3}
-          ref={bottomRef}
-        >
-          <BottomMenu />
-        </Paper>
+        <Router>
+          <AppBar ref={ref} />
+          <Container
+            maxWidth="xl"
+            disableGutters={false}
+            sx={{
+              backgroundColor: `${light}`,
+              minHeight: `calc(100vh - ${divHeight}px - ${bottomDivHeight}px)`,
+              color: `${dark}`,
+            }}
+          >
+            <Routes>
+              <Route path="/" element={<FoodForm />} />
+              <Route path="/carb-table" element={<CarbosTable />} />
+              <Route path="/report" element={<MealsReport />} />
+            </Routes>
+          </Container>
+          <Paper
+            sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+            elevation={3}
+            ref={bottomRef}
+          >
+            <BottomMenu />
+          </Paper>
+        </Router>
       </AppContext.Provider>
-    </Container>
+    </Box>
   );
 }
 

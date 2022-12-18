@@ -8,6 +8,7 @@ import {
   RestaurantRounded,
 } from "@mui/icons-material";
 import { ReactElement, useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { AppContext } from "../AppContext";
 
 export default function SimpleBottomNavigation(): ReactElement {
@@ -39,16 +40,22 @@ export default function SimpleBottomNavigation(): ReactElement {
           label={actionValues[0]}
           value={actionValues[0]}
           icon={<RestaurantRounded />}
+          component={Link}
+          to="/"
         />
         <BottomNavigationAction
           label={actionValues[1]}
           value={actionValues[1]}
           icon={<TableViewRounded />}
+          component={Link}
+          to="/carb-table"
         />
         <BottomNavigationAction
           label={actionValues[2]}
           value={actionValues[2]}
           icon={<AssessmentRounded />}
+          component={Link}
+          to="/report"
         />
       </BottomNavigation>
     </Box>

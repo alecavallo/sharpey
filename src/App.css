@@ -1,3 +1,11 @@
+html {
+  --color-blue: hsl(193, 46%, 67%);
+  --color-light: hsl(166, 23%, 96%);
+  --color-dark: hsl(235, 21%, 17%);
+  --color-red: hsl(4, 99%, 66%);
+  --color-rose: hsl(353, 28%, 62%);
+  --color-white: hsl(0, 0, 100%);
+}
 .App {
   text-align: center;
 }

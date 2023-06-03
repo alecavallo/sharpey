@@ -1,219 +1,83 @@
-import React, { ReactElement, ReactNode, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { Route, BrowserRouter as Router, Redirect } from "react-router-dom";
-import Container from "@material-ui/core/Container";
-import Dashboard from "./components/Dashboard/Dashboard";
-import {
-  AppBar,
-  CssBaseline,
-  Drawer,
-  Hidden,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  useTheme,
-} from "@material-ui/core";
-import TrendingUpRoundedIcon from "@material-ui/icons/TrendingUpRounded";
-import MailIcon from "@material-ui/icons/Mail";
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import Container from "@mui/material/Container";
+import BottomMenu from "./menus/BottomMenu";
+
+import AppBar from "./menus/AppBar";
 import { AppContext } from "./AppContext";
-import Divider from "@material-ui/core/Divider";
-import FastfoodRoundedIcon from "@material-ui/icons/FastfoodRounded";
-import TablaCarbohidratos from "./components/Carbohidratos/TablaCarbohidratos";
-import Recetas from "./components/Recetas/Recetas";
-const drawerWidth = 240;
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-    },
-    drawer: {
-      [theme.breakpoints.up("sm")]: {
-        width: drawerWidth,
-        flexShrink: 0,
-      },
-    },
-    appBar: {
-      [theme.breakpoints.up("sm")]: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: drawerWidth,
-      },
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      [theme.breakpoints.up("sm")]: {
-        display: "none",
-      },
-    },
-    // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-      width: drawerWidth,
-    },
-    content: {
-      flexGrow: 1,
-      padding: theme.spacing(3),
-    },
-    SelectedMenu: {
-      color: theme.palette.primary.main,
-      "& svg": {
-        color: theme.palette.primary.main,
-      },
-    },
-  })
-);
+import Paper from "@mui/material/Paper";
 
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-function App(props: Props): ReactElement {
-  const classes = useStyles();
-  const theme = useTheme();
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
+import FoodRegistrationForm from "./register/FoodRegistrationForm";
+import CarbosTable from "./information/CarbosTable";
+import MealsReport from "./reports/MealsReport";
+import { dark, light } from "./colors";
+import { Box } from "@mui/material";
+
+function App() {
   const [title, setTitle] = useState("Bienvenidos");
-  const [selectedMenu, setSelectedMenu] = useState(0);
-
+  const [divHeight, setDivHeight] = useState(0);
+  const [bottomDivHeight, setBottomDivHeight] = useState(0);
   const values = {
     title,
     setTitle,
   };
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
 
-  const handleSelectMenu = (index: number, path: string) => {
-    setSelectedMenu(index);
-    return <Redirect to={`/${path}`} />;
-  };
+  const ref = useRef<HTMLDivElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <List>
-        {["Carbohidratos", "Recetas"].map((text, index) => (
-          <ListItem
-            button
-            key={text}
-            onClick={() => {
-              handleSelectMenu(index, text.toLowerCase());
-            }}
-            component="a"
-            href={`/${text.toLowerCase()}`}
-            className={
-              selectedMenu === index ? classes.SelectedMenu : undefined
-            }
-          >
-            <ListItemIcon>
-              {(function (): ReactNode {
-                switch (index) {
-                  case 0:
-                    return <TrendingUpRoundedIcon />;
-                  case 1:
-                    return <FastfoodRoundedIcon />;
-                  default:
-                    return <MailIcon />;
-                }
-              })()}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      {/* <Divider />
-      <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <TrendingUpRoundedIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List> */}
-    </div>
-  );
+  useEffect(() => {
+    if (ref.current) {
+      setDivHeight(ref.current.clientHeight);
+    }
+    if (bottomRef.current) {
+      setBottomDivHeight(bottomRef.current.clientHeight);
+    }
+  }, []);
 
   return (
-    <Container>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppContext.Provider value={values}>
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="Abrir menú"
-                edge="start"
-                onClick={handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" noWrap>
-                {title}
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <nav className={classes.drawer} aria-label="HdC">
-            <Hidden smUp implementation="css">
-              <Drawer
-                container={container}
-                variant="temporary"
-                anchor={theme.direction === "rtl" ? "right" : "left"}
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
-                }}
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation="css">
-              <Drawer
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                variant="permanent"
-                open
-              >
-                {drawer}
-              </Drawer>
-            </Hidden>
-          </nav>
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Router>
-              <Route exact path="/" component={Dashboard} />
+    <Box>
+      <AppContext.Provider value={values}>
+        <Router>
+          <AppBar ref={ref} />
+          <Container
+            maxWidth="xl"
+            disableGutters={false}
+            sx={{
+              backgroundColor: `${light}`,
+              minHeight: `calc(100vh - ${divHeight}px - ${bottomDivHeight}px)`,
+              color: `${dark}`,
+            }}
+          >
+            <Routes>
               <Route
-                exact
-                path="/carbohidratos"
-                component={TablaCarbohidratos}
+                path="/"
+                element={
+                  <FoodRegistrationForm
+                    date={""}
+                    time={""}
+                    food={""}
+                    carbohydrates={0}
+                    glucemia={0}
+                    observations={""}
+                  />
+                }
               />
-              <Route exact path="/recetas" component={Recetas} />
-            </Router>
-          </main>
-        </AppContext.Provider>
-      </div>
-    </Container>
+              <Route path="/carb-table" element={<CarbosTable />} />
+              <Route path="/report" element={<MealsReport />} />
+            </Routes>
+          </Container>
+          <Paper
+            sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+            elevation={3}
+            ref={bottomRef}
+          >
+            <BottomMenu />
+          </Paper>
+        </Router>
+      </AppContext.Provider>
+    </Box>
   );
 }
 

@@ -3,7 +3,6 @@
   "extends": [
     "eslint:recommended",
     "prettier",
-    "prettier/react",
     "plugin:@typescript-eslint/recommended"
   ],
   "parserOptions": {

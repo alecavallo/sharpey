@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import FoodForm from "./register/FoodFrom";
+import FoodRegistrationForm from "./register/FoodRegistrationForm";
 import CarbosTable from "./information/CarbosTable";
 import MealsReport from "./reports/MealsReport";
 import { dark, light } from "./colors";
@@ -51,7 +51,19 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<FoodForm />} />
+              <Route
+                path="/"
+                element={
+                  <FoodRegistrationForm
+                    date={""}
+                    time={""}
+                    food={""}
+                    carbohydrates={0}
+                    glucemia={0}
+                    observations={""}
+                  />
+                }
+              />
               <Route path="/carb-table" element={<CarbosTable />} />
               <Route path="/report" element={<MealsReport />} />
             </Routes>

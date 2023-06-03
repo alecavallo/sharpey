@@ -35,13 +35,13 @@ const FoodRegistrationForm = (props: FormDataProps) => {
       case "food":
         setFood(value);
         break;
-      case "carbohydrates":
+      case "carbs":
         setCarbohydrates(parseInt(value));
         break;
       case "glucemia":
         setGlucemia(parseInt(value));
         break;
-      case "observations":
+      case "obs":
         setObservations(value);
         break;
 
@@ -84,7 +84,8 @@ const FoodRegistrationForm = (props: FormDataProps) => {
         </Grid>
         <Grid item sm={3} xs={4}>
           <TextField
-            id="standard-basic"
+            id="food"
+            name="food"
             label="Comida"
             variant="standard"
             value={food}
@@ -94,7 +95,8 @@ const FoodRegistrationForm = (props: FormDataProps) => {
         </Grid>
         <Grid item sm={1} xs={4}>
           <TextField
-            id="standard-basic"
+            id="carbs"
+            name="carbs"
             label="Carbohidratos"
             variant="standard"
             value={carbohydrates}
@@ -103,7 +105,8 @@ const FoodRegistrationForm = (props: FormDataProps) => {
         </Grid>
         <Grid item sm={1} xs={4}>
           <TextField
-            id="standard-basic"
+            id="glucemia"
+            name="glucemia"
             label="Glucemia"
             variant="standard"
             value={glucemia}
@@ -112,7 +115,8 @@ const FoodRegistrationForm = (props: FormDataProps) => {
         </Grid>
         <Grid item sm={3} xs={4}>
           <TextField
-            id="standard-basic"
+            id="obs"
+            name="obs"
             label="Observaciones"
             variant="standard"
             value={observations}
@@ -133,7 +137,7 @@ const FoodRegistrationForm = (props: FormDataProps) => {
       </Grid>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
-          This is a success message!
+          Comida registrada!
         </Alert>
       </Snackbar>
     </Box>

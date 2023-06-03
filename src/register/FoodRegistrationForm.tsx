@@ -9,10 +9,6 @@ import { Moment } from "moment";
 import moment from "moment";
 import "moment/locale/es";
 
-/* import 'dayjs/locale/de';
-import 'dayjs/locale/en-gb';
-import 'dayjs/locale/zh-cn'; */
-
 interface FormDataProps {
   date: string;
   time: string;

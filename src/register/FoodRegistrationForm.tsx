@@ -55,10 +55,14 @@ const FoodRegistrationForm = (props: FormDataProps) => {
         setFood(value);
         break;
       case "carbs":
-        setCarbohydrates(parseInt(value));
+        if (value) {
+          setCarbohydrates(parseInt(value));
+        }
         break;
       case "glucemia":
-        setGlucemia(parseInt(value));
+        if (value) {
+          setGlucemia(parseInt(value));
+        }
         break;
       case "obs":
         setObservations(value);

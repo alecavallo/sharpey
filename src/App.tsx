@@ -61,6 +61,7 @@ function App() {
                     carbohydrates={0}
                     glucemia={0}
                     observations={""}
+                    meal={0}
                   />
                 }
               />

@@ -9,5 +9,5 @@ updates:
     directory: "/src" # Location of package manifests
     schedule:
       interval: "monthly"
-     assignees:
+    assignees:
       - "alecavallo"

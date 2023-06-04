@@ -1,4 +1,9 @@
-import React, { ChangeEventHandler, FormEvent, useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FormEvent,
+  useEffect,
+  useState,
+} from "react";
 
 import {
   Alert,
@@ -32,10 +37,10 @@ interface FormDataProps {
 }
 const locales = ["en-us", "en-gb", "es-Es"];
 const mealType = ["desayuno", "almuerzo", "merienda", "cena", "colación"];
-const breakfast = moment("8:00am");
-const lunch = moment("1:00pm");
-const snack = moment("6:00pm");
-const dinner = moment("9:00pm");
+const breakfast = moment("8:00 am", "h:mm a");
+const lunch = moment("1:00 pm", "h:mm a");
+const snack = moment("6:00 pm", "h:mm a");
+const dinner = moment("9:00 pm", "h:mm a");
 
 type LocaleKey = (typeof locales)[number];
 const FoodRegistrationForm = (props: FormDataProps) => {
@@ -47,6 +52,11 @@ const FoodRegistrationForm = (props: FormDataProps) => {
   const [observations, setObservations] = useState(props.observations);
   const [open, setOpen] = useState(false);
   const [meal, setMeal] = useState(props.meal);
+
+  useEffect(() => {
+    const meal = calculateMeal(date);
+    setMeal(meal);
+  }, [date]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -77,33 +87,38 @@ const FoodRegistrationForm = (props: FormDataProps) => {
     setMeal(parseInt(event.target.value));
   };
 
-  const calculateMeal = (time: Moment | null): string => {
-    if (!time) return "";
-    let endRange = breakfast.add(1, "hour").add(30, "minutes");
-    let startRange = breakfast.subtract(30, "minutes");
+  const handleChangeDateTime = (
+    newValue: React.SetStateAction<Moment | null>
+  ) => {
+    setDate(newValue);
+  };
+  const calculateMeal = (time: Moment | null): number => {
+    if (!time) return 5;
+    let endRange = moment(breakfast).add(1, "hour").add(30, "minutes");
+    let startRange = moment(breakfast).subtract(30, "minutes");
     if (time.isAfter(startRange) && time.isBefore(endRange)) {
-      return mealType[0];
+      return 0;
     }
 
-    endRange = lunch.add(1, "hour").add(30, "minutes");
-    startRange = lunch.subtract(30, "minutes");
+    endRange = moment(lunch).add(1, "hour").add(30, "minutes");
+    startRange = moment(lunch).subtract(30, "minutes");
     if (time.isAfter(startRange) && time.isBefore(endRange)) {
-      return mealType[1];
+      return 1;
     }
 
-    endRange = snack.add(1, "hour").add(30, "minutes");
-    startRange = snack.subtract(30, "minutes");
+    endRange = moment(snack).add(1, "hour").add(30, "minutes");
+    startRange = moment(snack).subtract(30, "minutes");
     if (time.isAfter(startRange) && time.isBefore(endRange)) {
-      return mealType[2];
+      return 2;
     }
 
-    endRange = dinner.add(1, "hour").add(30, "minutes");
-    startRange = dinner.subtract(30, "minutes");
+    endRange = moment(dinner).add(1, "hour").add(30, "minutes");
+    startRange = moment(dinner).subtract(30, "minutes");
     if (time.isAfter(startRange) && time.isBefore(endRange)) {
-      return mealType[2];
+      return 3;
     }
 
-    return mealType[5];
+    return 4;
   };
   const handleClose = (
     event: React.SyntheticEvent | Event,
@@ -133,7 +148,7 @@ const FoodRegistrationForm = (props: FormDataProps) => {
             <DateTimePicker
               label="Fecha"
               value={date}
-              onChange={(newValue) => setDate(newValue)}
+              onChange={handleChangeDateTime}
             />
           </LocalizationProvider>
         </Grid>

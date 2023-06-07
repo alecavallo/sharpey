@@ -1,9 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  FormEvent,
-  useEffect,
-  useState,
-} from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 import {
   Alert,
@@ -25,6 +20,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { Moment } from "moment";
 import moment from "moment";
 import "moment/locale/es";
+import TakePicture from "../components/TakePicture";
 
 interface FormDataProps {
   date: string;
@@ -44,14 +40,16 @@ const dinner = moment("9:00 pm", "h:mm a");
 
 type LocaleKey = (typeof locales)[number];
 const FoodRegistrationForm = (props: FormDataProps) => {
+  const locale: LocaleKey = "es-es";
+  // const [locale, setLocale] = useState<LocaleKey>("es-es");
   const [date, setDate] = React.useState<Moment | null>(moment());
-  const [locale, setLocale] = useState<LocaleKey>("es-es");
   const [food, setFood] = useState(props.food);
   const [carbohydrates, setCarbohydrates] = useState(props.carbohydrates);
   const [glucemia, setGlucemia] = useState(props.glucemia);
   const [observations, setObservations] = useState(props.observations);
   const [open, setOpen] = useState(false);
   const [meal, setMeal] = useState(props.meal);
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     const meal = calculateMeal(date);
@@ -136,7 +134,12 @@ const FoodRegistrationForm = (props: FormDataProps) => {
 
   return (
     <Box component="form" noValidate autoComplete="off">
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="center"
+        alignItems={"flex-end"}
+      >
         <Grid item sm={3} xs={4}>
           <LocalizationProvider
             dateAdapter={AdapterMoment}
@@ -212,6 +215,9 @@ const FoodRegistrationForm = (props: FormDataProps) => {
             onChange={handleChange}
             fullWidth
           />
+        </Grid>
+        <Grid item sm={6} xs={12}>
+          <TakePicture imgData={image} setImgData={setImage} />
         </Grid>
         <Grid item sm={12} xs={12}>
           <Button
